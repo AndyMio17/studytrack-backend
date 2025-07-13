@@ -1,31 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using StudyTracker.Api.Models;
-using StudyTracker.Api.Services;
+using StudyTracker.Api.Models; // Importa el modelo Course
+using StudyTrack.Api.Data; // Importa el contexto de la base de datos
+using Microsoft.EntityFrameworkCore; // Importa Entity Framework Core para operaciones de base de datos
 
 namespace StudyTracker.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]  // Define el endpoint base: /api/courses.
-public class CourseController(ICourseService service) : ControllerBase //Recibe el servicio que creamos como parámetro (lo inyecta automáticamente).
+public class CoursesController(StudyTrackContext context) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Course>> GetAll() => Ok(service.GetAll()); // Cuando haces un GET a /api/courses, responde con la lista de cursos.
+    public async Task<ActionResult<IEnumerable<Course>>> GetAll() => await context.Courses.ToListAsync();
 
     [HttpGet("{id:guid}")]
-    public ActionResult<Course> GetById(Guid id)// Cuando haces GET a /api/courses/ID, te devuelve ese curso si existe, o 404 Not Found si no existe.
+    public async Task<ActionResult<Course>> GetById(Guid id)// Cuando haces GET a /api/courses/ID, te devuelve ese curso si existe, o 404 Not Found si no existe.
     {
-        var course = service.GetById(id);
-        return course is null ? NotFound() : Ok(course);
+        var course = await context.Courses.FindAsync(id); // Busca el curso por ID en la base de datos.
+        return course is null ? NotFound() : Ok(course); // Si no se encuentra, devuelve 404 Not Found; si se encuentra, devuelve 200 OK con el curso.
     }
 
     [HttpPost]
-    public ActionResult<Course> Create([FromBody] Course course)
-    // Cuando el frontend o Swagger envía un JSON con nombre y créditos, este método:
-    // 1. Genera el ID
-    // 2. Guarda el curso
-    // 3. Devuelve el curso completo (incluyendo su ID)
+    public async Task<ActionResult<Course>> Create([FromBody] Course course) // Cuando haces POST a /api/courses, crea un nuevo curso.
     {
-        var created = service.Create(course);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        course.Id = Guid.NewGuid(); // Genera un nuevo ID para el curso.
+        context.Courses.Add(course); // Añade el curso al contexto.
+        await context.SaveChangesAsync(); // Guarda los cambios en la base de datos.
+        return CreatedAtAction(nameof(GetById), new { id = course.Id }, course); // Devuelve 201 Created con la ubicación del nuevo recurso.
     }
 }
