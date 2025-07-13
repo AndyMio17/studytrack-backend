@@ -1,23 +1,13 @@
-# Siguiente paso: Conectar Entity Framework Core con una base de datos SQLite
+# 🧩 Paso 4 · Crear el modelo Grade y vincularlo con Course
 
-### SQLite es perfecto para practicar porque:
+### 🎯 Objetivo:
 
-* No necesita instalar nada adicional
+* Crear un modelo Grade que pertenezca a un Course
+* Poder registrar notas de estudiantes en un curso
+* Consultar todas las notas por curso desde la API
 
-* Guarda los datos en un simple archivo .db
 
-* Es muy usado en aplicaciones reales
-
-### ✅ ¿Qué vamos a lograr?
-
-* Usar Entity Framework Core (EF Core)
-
-* Crear la base de datos automáticamente desde las clases (Code First)
-
-* Reemplazar el servicio en memoria por uno que use base de datos
-
-* Ejecutar comandos para crear y aplicar migraciones
-
-1. # Paso 1 · Instalar los paquetes de EF Core + SQLite
-2. # Paso 2 · Crear y configurar StudyTrackContext
-3. # Paso 3: Crear y aplicar migración inicial
+1. ## 4.1 Crear el modelo Grade
+2. ## 4.2 Modificar el modelo Course para que tenga una lista de Grades
+3. ## 4.3 Agregar DbSet<Grade> en tu StudyTrackContext
+4. ## 4.4 Crear una nueva migración para aplicar los cambios
