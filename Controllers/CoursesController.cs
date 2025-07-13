@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using StudyTracker.Api.Models; // Importa el modelo Course
+using StudyTrack.Api.Models; // Importa el modelo Course
 using StudyTrack.Api.Data; // Importa el contexto de la base de datos
 using Microsoft.EntityFrameworkCore; // Importa Entity Framework Core para operaciones de base de datos
 

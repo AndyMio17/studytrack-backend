@@ -1,5 +1,6 @@
 using StudyTrack.Api.Data;
 using Microsoft.EntityFrameworkCore; // al inicio del archivo
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
